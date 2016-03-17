@@ -51,3 +51,8 @@ group :development do
   gem 'guard-rake'
   gem 'guard-rspec'
 end
+
+group :test do
+  gem 'factory_girl_rails'
+  gem 'faker'
+end
