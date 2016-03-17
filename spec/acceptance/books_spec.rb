@@ -13,7 +13,7 @@ resource 'Books' do
   response_field :author_last_name, "Last name of the book's author"
   response_field :title, 'Title of the book'
 
-  context 'existing book data' do
+  context 'manipulate existing books' do
     get '/books' do
       example 'Get a list of books' do
         explanation 'Return a list of books, in no particular order.'
@@ -24,14 +24,24 @@ resource 'Books' do
       end
     end
 
-    get '/books/:id' do
+    context 'existing data' do
       let(:book) { FactoryGirl.create :book }
       let(:id) { book.id }
 
-      example_request 'Get data for one book' do
-        explanation 'Return data for the book with ID `:id`.'
-        expect(status).to be 200
-        expect(json).to be_present
+      get '/books/:id' do
+        example_request 'Get data for one book' do
+          explanation 'Return data for the book with ID `:id`.'
+          expect(status).to be 200
+          expect(json).to be_present
+        end
+      end
+
+      delete '/books/:id' do
+        example_request 'Delete a book' do
+          explanation 'Delete the book with ID `:id`'
+          expect(status).to be 204
+          expect(Book.count).to be 0
+        end
       end
     end
   end
